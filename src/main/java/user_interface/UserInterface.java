@@ -10,36 +10,62 @@ public class UserInterface {
 
     ///////// CONSTRUCTOR ////////////
     public UserInterface() {
-        System.out.println("Velkommen til Svømmeklubben Delfinen's administrative system");
+        System.out.println("\nVelkommen til Svømmeklubben Delfinen's administrative system");
         input.useDelimiter("\n");
-        menuPunkt1();
+        hovedmenu();
     }
 
     ////////// METHODS ///////////
-    public void menuPunkt1(){
-        System.out.println("Tast 1 for at tilføje et nyt medlem:");
+
+    public void hovedmenu(){
+        System.out.println("Velkommen til hovedmenuen");
+        System.out.println("Du har følgende valgmuligheder:\n");
+        System.out.println("1: Tilføj nyt medlem");
+        System.out.println("2: Se oversigt over klubbens indtægter");
+        System.out.println("0: Afslut programmet");
+        System.out.print("\nIndtast tallet for det menupunkt, du ønsker at tilgå: ");
+
         String userInput = input.next();
-        if(userInput.equals("1")){
-            System.out.println("Du er ved at tilføje et nyt medlem:");
-            System.out.println("Du skal indtaste det nye medlems navn og fødselsdato...\n");
-            System.out.println("Indtast det nye medlems fulde navn: ");
-            String userNavn = input.next();
-            System.out.println("Indtast månedsdag som et tal: ");
-            int userMånedsdag = input.nextInt();
-            System.out.println("Indtast måned som et tal: ");
-            int userMåned = input.nextInt();
-            System.out.println("Indtast årstal: ");
-            int userÅr = input.nextInt();
-            System.out.println("Skal det nye medlem registreres som aktivt eller passivt?");
-            boolean userAktivtMedlem = input.next().equals("aktivt");
-
-            controller.tilføjMedlem(userNavn, userMånedsdag, userMåned, userÅr, userAktivtMedlem);
-            System.out.println("Du har tilføjet: " + userNavn + " som nyt medlem." );
-        } else {
-            //TODO
+        switch (userInput){
+            case "1" -> menuPunktTilføjMedlem();
+            case "2" -> menuPunktKontingentOversigt();
+            case "0" -> System.out.println("Afslutter programmet...");
+            default -> {
+                System.out.println("\nDit input svarede ikke til et af menupunkterne.");
+                System.out.println("Prøv igen:\n");
+                hovedmenu();
+            }
         }
-
     }
 
+    ////////// HJÆLPEMETODER/AUXILIARY METHODS ///////////
+
+    private void menuPunktTilføjMedlem(){
+        System.out.println("\nDu er ved at tilføje et nyt medlem:");
+        System.out.println("Du skal indtaste det nye medlems navn og fødselsdato...\n");
+        System.out.print("Indtast det nye medlems fulde navn: ");
+        String userNavn = input.next();
+        System.out.print("Indtast månedsdag som et tal: ");
+        int userMånedsdag = input.nextInt();
+        System.out.print("Indtast måned som et tal: ");
+        int userMåned = input.nextInt();
+        System.out.print("Indtast årstal: ");
+        int userÅr = input.nextInt();
+        //TODO aktivt/aktiv
+        System.out.println("Skal det nye medlem registreres som aktivt eller passivt?");
+        boolean userAktivtMedlem = input.next().equals("aktivt");
+
+        controller.tilføjMedlem(userNavn, userMånedsdag, userMåned, userÅr, userAktivtMedlem);
+        System.out.println("Du har tilføjet: " + userNavn + " som nyt medlem.\n" );
+
+        hovedmenu();
+    }
+
+    private void menuPunktKontingentOversigt(){
+        System.out.println("\nSummen af klubbens årlige kontingent indbetalinger er: ");
+        System.out.println(controller.sumAfKontingent() + " dkk.\n");
+
+        hovedmenu();
+    }
 
 }

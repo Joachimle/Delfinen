@@ -6,4 +6,8 @@ public class Controller {
     public void tilføjMedlem(String navn, int månedsdag, int måned, int år, boolean aktivtMedlem) {
         klub.tilføjMedlem(navn, månedsdag, måned, år, aktivtMedlem);
     }
+
+    public int sumAfKontingent() {
+        return klub.sumAfKontingent();
+    }
 }

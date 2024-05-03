@@ -17,7 +17,7 @@ public class Medlem {
         this.aktivtMedlem = aktivtMedlem;
     }
 
-    ///////// Methods ////////
+    ///////// METHODS ////////
 
     public int kontingentPris(){
         int antalÅrGammel = Period.between(fødselsdato, LocalDate.now()).getYears();
