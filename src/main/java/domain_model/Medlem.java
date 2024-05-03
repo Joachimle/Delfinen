@@ -32,4 +32,13 @@ public class Medlem {
             return 1600;
         }
     }
+
+    public boolean erIRestance(){
+        //TODO opklar hvordan restance afgøres (Hvor kommer informationen fra?)
+        return true;
+    }
+
+    public String getNavn(){
+        return navn;
+    }
 }

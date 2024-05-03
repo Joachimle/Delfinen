@@ -1,5 +1,7 @@
 package domain_model;
 
+import java.util.ArrayList;
+
 public class Controller {
     Klub klub = new Klub();
 
@@ -9,5 +11,9 @@ public class Controller {
 
     public int sumAfKontingent() {
         return klub.sumAfKontingent();
+    }
+
+    public ArrayList<String> visMedlemmerIRestance() {
+        return klub.visMedlemmerIRestance();
     }
 }

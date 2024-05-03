@@ -12,6 +12,10 @@ public class UserInterface {
     public UserInterface() {
         System.out.println("\nVelkommen til Svømmeklubben Delfinen's administrative system");
         input.useDelimiter("\n");
+        //Hardcodede medlemmer for testing
+        controller.tilføjMedlem("Joachim Leth Elgaard", 21, 02, 2001, true);
+        controller.tilføjMedlem("Jens Ellegaard", 22, 9, 1337, true);
+
         hovedmenu();
     }
 
@@ -22,6 +26,7 @@ public class UserInterface {
         System.out.println("Du har følgende valgmuligheder:\n");
         System.out.println("1: Tilføj nyt medlem");
         System.out.println("2: Se oversigt over klubbens indtægter");
+        System.out.println("3: Se oversigt over medlemmer i restance");
         System.out.println("0: Afslut programmet");
         System.out.print("\nIndtast tallet for det menupunkt, du ønsker at tilgå: ");
 
@@ -29,10 +34,12 @@ public class UserInterface {
         switch (userInput){
             case "1" -> menuPunktTilføjMedlem();
             case "2" -> menuPunktKontingentOversigt();
+            case "3" -> menuPunktRestanceOversigt();
             case "0" -> System.out.println("Afslutter programmet...");
             default -> {
                 System.out.println("\nDit input svarede ikke til et af menupunkterne.");
                 System.out.println("Prøv igen:\n");
+
                 hovedmenu();
             }
         }
@@ -68,4 +75,13 @@ public class UserInterface {
         hovedmenu();
     }
 
+    private void menuPunktRestanceOversigt(){
+        System.out.println("\nMedlemmer i restance: ");
+        for (String navn : controller.visMedlemmerIRestance()) {
+            System.out.println(navn);
+        }
+        System.out.println();
+
+        hovedmenu();
+    }
 }

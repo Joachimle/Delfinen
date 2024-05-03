@@ -19,4 +19,14 @@ public class Klub {
         return sum;
     }
 
+    public ArrayList<String> visMedlemmerIRestance(){
+        ArrayList<String> medlemmerIRestance = new ArrayList<>();
+        for (Medlem medlem : medlemmer) {
+            if (medlem.erIRestance()) {
+                medlemmerIRestance.add(medlem.getNavn());
+            }
+        }
+        return medlemmerIRestance;
+    }
+
 }
