@@ -230,7 +230,7 @@ public class UserInterface {
     private void menuPunktTilføjTræningsresultater() {
         System.out.println("Her oprettes træningsresultater.");
         System.out.println("Tast 0 ved valg af hold eller dato for at annullere og gå tilbage til hovedmenuen.");
-        int valg = scanInt("Juniorhold (1) eller seniorhold (2)? Svar: ", 0, 2);
+        int valg = scanInt("Juniorhold (1) eller seniorhold (2): ", 0, 2);
         if (valg == 0) {
             hovedmenu();
             return;
