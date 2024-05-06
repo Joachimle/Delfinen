@@ -1,14 +1,31 @@
 package domain_model;
 
+import java.time.Duration;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class Klub {
-    private ArrayList<Medlem> medlemmer = new ArrayList<>();
+    private List<Medlem> medlemmer;
+    private List<Træningsresultat> træningsresultater;
 
+    public Klub() {
+        medlemmer = new ArrayList<>();
+        træningsresultater = new ArrayList<>();
+    }
 
     /////// METHODS ////////
-    public void tilføjMedlem(String navn, int månedsdag, int måned, int år, boolean aktivtMedlem) {
-        medlemmer.add(new Medlem(navn, månedsdag, måned, år, aktivtMedlem));
+    public void tilføjMedlem(String navn, int månedsdag, int måned, int år, boolean passivtMedlem) {
+        medlemmer.add(new Medlem(navn, månedsdag, måned, år, passivtMedlem));
+    }
+
+    public void tilføjMedlem(String navn, int månedsdag, int måned, int år, Set<Svømmedisciplin> discipliner) {
+        medlemmer.add(new Konkurrencesvømmer(navn, månedsdag, måned, år, discipliner));
+    }
+
+    public void tilføjTræningsresultat(Konkurrencesvømmer svømmer, Svømmedisciplin disciplin, LocalDate dato, Duration resultat) {
+        træningsresultater.add(new Træningsresultat(svømmer, disciplin, dato, resultat));
     }
 
     public int sumAfKontingent(){
@@ -19,7 +36,7 @@ public class Klub {
         return sum;
     }
 
-    public ArrayList<String> visMedlemmerIRestance(){
+    public List<String> visMedlemmerIRestance(){
         ArrayList<String> medlemmerIRestance = new ArrayList<>();
         for (Medlem medlem : medlemmer) {
             if (medlem.erIRestance()) {
@@ -29,4 +46,23 @@ public class Klub {
         return medlemmerIRestance;
     }
 
+    public List<Konkurrencesvømmer> getJuniorsvømmere() {
+        ArrayList<Konkurrencesvømmer> hold = new ArrayList<>();
+        for (Medlem medlem : medlemmer) {
+            if (medlem instanceof Konkurrencesvømmer juniorsvømmer && medlem.erMindreårig()) {
+                hold.add(juniorsvømmer);
+            }
+        }
+        return hold;
+    }
+
+    public List<Konkurrencesvømmer> getSeniorsvømmere() {
+        ArrayList<Konkurrencesvømmer> hold = new ArrayList<>();
+        for (Medlem medlem : medlemmer) {
+            if (medlem instanceof Konkurrencesvømmer seniorsvømmer && !medlem.erMindreårig()) {
+                hold.add(seniorsvømmer);
+            }
+        }
+        return hold;
+    }
 }
