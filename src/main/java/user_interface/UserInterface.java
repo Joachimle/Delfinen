@@ -20,8 +20,8 @@ public class UserInterface {
         controller = new Controller();
 
         // Hardcodede medlemmer til test af UI
-        controller.tilføjMedlem("Joachim Leth Elgaard", 21, 02, 2001, Set.of(Svømmedisciplin.RYGCRAWL));
-        controller.tilføjMedlem("Jens Ellegaard", 22, 9, 1337, Set.of(Svømmedisciplin.CRAWL, Svømmedisciplin.BUTTERFLY));
+        controller.addMember("Joachim Leth Elgaard", 21, 02, 2001, Set.of(Svømmedisciplin.RYGCRAWL));
+        controller.addMember("Jens Ellegaard", 22, 9, 1337, Set.of(Svømmedisciplin.CRAWL, Svømmedisciplin.BUTTERFLY));
     }
 
     ////////// METHODS ///////////
@@ -178,8 +178,8 @@ public class UserInterface {
                 hovedmenu();
                 return;
             }
-            case 1 -> controller.tilføjMedlem(navn, månedsdag, måned, år, true);
-            case 2 -> controller.tilføjMedlem(navn, månedsdag, måned, år, false);
+            case 1 -> controller.addMember(navn, månedsdag, måned, år, true);
+            case 2 -> controller.addMember(navn, månedsdag, måned, år, false);
             case 3 -> {
                 System.out.println("Butterfly (1), crawl (2), rygcrawl (3) og brystsvømning (4).");
                 System.out.println("Vælg én eller flere discipliner, fx 23 for crawl og rygcrawl: ");
@@ -201,7 +201,7 @@ public class UserInterface {
                 if (input.contains("4")) {
                     discipliner.add(Svømmedisciplin.BRYSTSVØMNING);
                 }
-                controller.tilføjMedlem(navn, månedsdag, måned, år, discipliner);
+                controller.addMember(navn, månedsdag, måned, år, discipliner);
                 System.out.print(navn + " er tilføjet som ny konkurrencesvømmer i ");
                 StringJoiner sj = new StringJoiner(", ");
                 discipliner.forEach(svømmedisciplin -> sj.add(svømmedisciplin.toString().toLowerCase()));

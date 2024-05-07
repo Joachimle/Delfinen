@@ -13,12 +13,12 @@ public class Controller {
         klub = new Klub();
     }
 
-    public void tilføjMedlem(String navn, int månedsdag, int måned, int år, boolean aktivtMedlem) {
-        klub.tilføjMedlem(navn, månedsdag, måned, år, aktivtMedlem);
+    public void addMember(String navn, int månedsdag, int måned, int år, boolean aktivtMedlem) {
+        klub.addMember(navn, månedsdag, måned, år, aktivtMedlem);
     }
 
-    public void tilføjMedlem(String navn, int månedsdag, int måned, int år, Set<Svømmedisciplin> discipliner) {
-        klub.tilføjMedlem(navn, månedsdag, måned, år, discipliner);
+    public void addMember(String navn, int månedsdag, int måned, int år, Set<Svømmedisciplin> discipliner) {
+        klub.addMember(navn, månedsdag, måned, år, discipliner);
     }
 
     public void tilføjTræningsresultat(Konkurrencesvømmer svømmer, Svømmedisciplin disciplin, LocalDate dato, Duration resultat) {

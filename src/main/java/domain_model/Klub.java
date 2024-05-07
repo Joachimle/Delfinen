@@ -15,12 +15,13 @@ public class Klub {
         træningsresultater = new ArrayList<>();
     }
 
+
     /////// METHODS ////////
-    public void tilføjMedlem(String navn, int månedsdag, int måned, int år, boolean passivtMedlem) {
+    public void addMember(String navn, int månedsdag, int måned, int år, boolean passivtMedlem) {
         medlemmer.add(new Medlem(navn, månedsdag, måned, år, passivtMedlem));
     }
 
-    public void tilføjMedlem(String navn, int månedsdag, int måned, int år, Set<Svømmedisciplin> discipliner) {
+    public void addMember(String navn, int månedsdag, int måned, int år, Set<Svømmedisciplin> discipliner) {
         medlemmer.add(new Konkurrencesvømmer(navn, månedsdag, måned, år, discipliner));
     }
 
