@@ -7,7 +7,7 @@ public class Konkurrencesvømmer extends Medlem {
     private Set<Svømmedisciplin> aktiveDiscipliner;
 
     public Konkurrencesvømmer(String navn, int månedsdag, int måned, int år, Set<Svømmedisciplin> aktiveDiscipliner) {
-        super(navn, månedsdag, måned, år, true);
+        super(navn, månedsdag, måned, år, false);
         this.aktiveDiscipliner = aktiveDiscipliner;
     }
 
