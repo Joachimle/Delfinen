@@ -4,14 +4,12 @@ import domain_model.Controller;
 import domain_model.Konkurrencesvømmer;
 import domain_model.Svømmedisciplin;
 
-import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.*;
 
 public class UserInterface {
-
-    private Scanner scanner;
+    private Scan scan;
     private Controller controller;
 
     ///////// CONSTRUCTOR ////////////
@@ -26,14 +24,12 @@ public class UserInterface {
 
     ////////// METHODS ///////////
     public void start() {
-
+        scan = new Scan();
         // Programmet åbnes (her skal loades)
-        scanner = new Scanner(System.in);
         System.out.println("\nVelkommen til Svømmeklubben Delfinens administrative system.");
         hovedmenu();
 
         // Programmet lukkes (her skal gemmes)
-        scanner.close();
         System.out.println("Programmet er lukket.");
     }
 
@@ -51,7 +47,7 @@ public class UserInterface {
             """
         );
 
-        int userInput = scanInt("Indtast menuvalg: ", 0, 4);
+        int userInput = scan.number("Indtast menuvalg: ", 0, 4);
 
         System.out.println();
 
@@ -64,108 +60,16 @@ public class UserInterface {
         }
     }
 
-    private int scanInt(String prompt, int minimum, int maximum) {
-        System.out.print(prompt);
-        String input = scanner.nextLine();
-        try {
-            int i = Integer.parseInt(input.trim());
-            if (i >= minimum && i <= maximum) {
-                return i;
-            } else {
-                System.out.println("Var forkert tal. Prøv igen.");
-                return scanInt(prompt, minimum, maximum);
-            }
-        } catch (NumberFormatException nfe) {
-            // Exception fra Integer.parseInt
-            System.out.println("Var ikke et heltal. Prøv igen.");
-            return scanInt(prompt, minimum, maximum);
-        }
-    }
-
-    private LocalDate scanDate(String prompt) {
-        System.out.print(prompt);
-        String input = scanner.nextLine();
-        if (input.trim().equals("0")) {
-            return null;
-        }
-        try {
-            String[] date = input.trim().split("/");
-            if (date.length == 2 || date.length == 3) {
-                int dayOfMonth = Integer.parseUnsignedInt(date[0]);
-                int month = Integer.parseUnsignedInt(date[1]);
-                int year;
-                if (date.length == 2) {
-                    // Her håndterer vi, hvis man ikke har skrevet år.
-                    year = LocalDate.now().getYear();
-                } else {
-                    year = Integer.parseUnsignedInt(date[2]);
-                    if (year < 100 && year > 9) {
-                        if (year <= LocalDate.now().getYear() - 2000) {
-                            // Her håndterer vi, hvis man har skrevet 23 i stedet for 2023
-                            year += 2000;
-                        } else {
-                            // Her håndterer vi, hvis man har skrevet 98 i stedet for 1998
-                            year += 1900;
-                        }
-                    }
-                }
-                return LocalDate.of(year, month, dayOfMonth);
-            } else {
-                // Der var ingen eller flere end 2 skråstreger.
-                System.out.println("Var ikke datoformat D/M eller D/M/Å. Prøv igen.");
-                return scanDate(prompt);
-            }
-        } catch (NumberFormatException nfe) {
-            // Exception fra Integer.parseUnsignedInt
-            System.out.println("Var ikke kun positive heltal og skråstreg. Prøv igen.");
-            return scanDate(prompt);
-        } catch (DateTimeException dte) {
-            // Exception fra LocalDate.of
-            System.out.println("Var ikke en korrekt dato. Prøv igen.");
-            return scanDate(prompt);
-        }
-    }
-
-    private Duration scanResult(String prompt) {
-        System.out.print(prompt);
-        String input = scanner.nextLine();
-        if (input.trim().equals("0")) {
-            return null;
-        }
-        try {
-            String[] tid = input.trim().split("\\.");
-            if (tid.length == 3 && tid[2].length() == 2) {
-                int minutter = Integer.parseUnsignedInt(tid[0]);
-                int sekunder = Integer.parseUnsignedInt(tid[1]);
-                int centisekunder = Integer.parseUnsignedInt(tid[2]);
-                if (sekunder > 59) {
-                    // Der var for mange sekunder.
-                    System.out.println("Antal sekunder var ikke under 60. Prøv igen.");
-                    return scanResult(prompt);
-                }
-                int millisekunder = (minutter * 60 + sekunder) * 1000 + centisekunder * 10;
-                return Duration.ofMillis(millisekunder);
-            } else {
-                // Der var færre eller flere end 2 punktummer eller C have færre eller flere end 2 cifre.
-                System.out.println("Var ikke tidsformat M.S.C, hvor C er hundrededele sekunder med to cifre. Prøv igen.");
-                return scanResult(prompt);
-            }
-        } catch (NumberFormatException nfe) {
-            // Exception fra Integer.parseUnsignedInt
-            System.out.println("Var ikke kun positive heltal og punktum. Prøv igen.");
-            return scanResult(prompt);
-        }
-    }
 
     private void menuPunktTilføjMedlem(){
         System.out.println("Her udfyldes oplysninger om det nye medlem. Tast 0 undervejs for at annullere og gå tilbage til hovedmenuen.");
         System.out.print("Fulde navn: ");
-        String navn = scanner.nextLine().trim();
+        String navn = scan.string();
         if (navn.equals("0")) {
             hovedmenu();
             return;
         }
-        LocalDate dato = scanDate("Fødselsdato: ");
+        LocalDate dato = scan.date("Fødselsdato: ");
         if (dato == null) {
             hovedmenu();
             return;
@@ -173,7 +77,7 @@ public class UserInterface {
         int månedsdag = dato.getDayOfMonth();
         int måned = dato.getMonthValue();
         int år = dato.getYear();
-        switch (scanInt("Passivt medlem (1), motionist (2) eller konkurrencesvømmer (3): ", 0, 3)) {
+        switch (scan.number("Passivt medlem (1), motionist (2) eller konkurrencesvømmer (3): ", 0, 3)) {
             case 0 -> {
                 hovedmenu();
                 return;
@@ -183,7 +87,7 @@ public class UserInterface {
             case 3 -> {
                 System.out.println("Butterfly (1), crawl (2), rygcrawl (3) og brystsvømning (4).");
                 System.out.println("Vælg én eller flere discipliner, fx 23 for crawl og rygcrawl: ");
-                String input = scanner.nextLine();
+                String input = scan.string();
                 Set<Svømmedisciplin> discipliner = new TreeSet<>();
                 if (input.trim().equals("0")) {
                     hovedmenu();
@@ -230,7 +134,7 @@ public class UserInterface {
     private void menuPunktTilføjTræningsresultater() {
         System.out.println("Her oprettes træningsresultater.");
         System.out.println("Tast 0 ved valg af hold eller dato for at annullere og gå tilbage til hovedmenuen.");
-        int valg = scanInt("Juniorhold (1) eller seniorhold (2): ", 0, 2);
+        int valg = scan.number("Juniorhold (1) eller seniorhold (2): ", 0, 2);
         if (valg == 0) {
             hovedmenu();
             return;
@@ -241,7 +145,7 @@ public class UserInterface {
             hovedmenu();
             return;
         }
-        LocalDate træningsdato = scanDate("Træningsdato: ");
+        LocalDate træningsdato = scan.date("Træningsdato: ");
         if (træningsdato == null) {
             hovedmenu();
             return;
@@ -250,7 +154,7 @@ public class UserInterface {
         System.out.println("Tast 0 undervejs for at springe en svømmers svømmedisciplin over.");
         for (Konkurrencesvømmer svømmer : hold) {
             for (Svømmedisciplin disciplin : svømmer.getAktiveDiscipliner()) {
-                Duration resultat = scanResult("Hvilken tid fik " + svømmer.getNavn() + " i " + disciplin.toString().toLowerCase() + "? Svar: ");
+                Duration resultat = scan.result("Hvilken tid fik " + svømmer.getNavn() + " i " + disciplin.toString().toLowerCase() + "? Svar: ");
                 if (resultat != null) {
                     controller.tilføjTræningsresultat(svømmer, disciplin, træningsdato, resultat);
                     System.out.println("Resultat registreret.");
