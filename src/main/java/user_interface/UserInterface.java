@@ -235,6 +235,12 @@ public class UserInterface {
             hovedmenu();
             return;
         }
+        List<Konkurrencesvømmer> hold = valg == 1 ? controller.getJuniorsvømmere() : controller.getSeniorsvømmere();
+        if (hold.isEmpty()){
+            System.out.println("Der er ingen svømmere på holdet");
+            hovedmenu();
+            return;
+        }
         LocalDate træningsdato = scanDate("Træningsdato: ");
         if (træningsdato == null) {
             hovedmenu();
@@ -242,7 +248,6 @@ public class UserInterface {
         }
         System.out.println("Svømmernes resultater indtastes i tidsformat M.S.C, hvor C er hundrededele sekunder med to cifre.");
         System.out.println("Tast 0 undervejs for at springe en svømmers svømmedisciplin over.");
-        List<Konkurrencesvømmer> hold = valg == 1 ? controller.getJuniorsvømmere() : controller.getSeniorsvømmere();
         for (Konkurrencesvømmer svømmer : hold) {
             for (Svømmedisciplin disciplin : svømmer.getAktiveDiscipliner()) {
                 Duration resultat = scanResult("Hvilken tid fik " + svømmer.getNavn() + " i " + disciplin.toString().toLowerCase() + "? Svar: ");
