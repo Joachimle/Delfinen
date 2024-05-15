@@ -29,6 +29,19 @@ public class Klub {
         træningsresultater.add(new Træningsresultat(svømmer, disciplin, dato, resultat));
     }
 
+    public List<String> visTop5Svømmere() {
+        ArrayList<String> top5Svømmere = new ArrayList<>();
+        for (Træningsresultat træningsresultat : træningsresultater) {
+            if (træningsresultat.disciplin() == Svømmedisciplin.CRAWL) {
+                if (getJuniorsvømmere().contains(træningsresultat.svømmer())) {
+
+                    //TODO ... sorter efter de 5 bedste tider
+                }
+            }
+        }
+    }
+    return ...
+
     public int sumAfKontingent(){
         int sum = 0;
         for (Medlem medlem : medlemmer) {

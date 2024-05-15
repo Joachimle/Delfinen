@@ -43,6 +43,7 @@ public class UserInterface {
             2) Se samlede forventede kontingent
             3) Se medlemmer i restance
             4) Tilføj træningsresultater
+            5) Top 5 svømmere
             0) Gem og luk
             """
         );
@@ -56,10 +57,17 @@ public class UserInterface {
             case 2 -> menuPunktKontingentOversigt();
             case 3 -> menuPunktRestanceOversigt();
             case 4 -> menuPunktTilføjTræningsresultater();
+            case 5 -> ...
             case 0 -> System.out.println("Gemmer...");
         }
     }
 
+
+    private void menuPunktTop5Svømmere(){
+        System.out.println("Oversigt over top 5 svømmere junior/senior i alle svømmedicipliner");
+        System.out.println("Der skal tasts noget her senere... ");
+
+    }
 
     private void menuPunktTilføjMedlem(){
         System.out.println("Her udfyldes oplysninger om det nye medlem. Tast 0 undervejs for at annullere og gå tilbage til hovedmenuen.");
