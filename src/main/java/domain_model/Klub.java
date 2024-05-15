@@ -3,6 +3,7 @@ package domain_model;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -29,18 +30,22 @@ public class Klub {
         træningsresultater.add(new Træningsresultat(svømmer, disciplin, dato, resultat));
     }
 
-    public List<String> visTop5Svømmere() {
-        ArrayList<String> top5Svømmere = new ArrayList<>();
+    public List<Træningsresultat> visTop5Svømmere() {
+        List<Træningsresultat> top5Svømmere = new ArrayList<>();
+        Collections.sort(træningsresultater); // Naturlig sortering (Duration resultater)
         for (Træningsresultat træningsresultat : træningsresultater) {
             if (træningsresultat.disciplin() == Svømmedisciplin.CRAWL) {
                 if (getJuniorsvømmere().contains(træningsresultat.svømmer())) {
-
-                    //TODO ... sorter efter de 5 bedste tider
+                    if (top5Svømmere.size() < 5) {
+                        if (!top5Svømmere.contains(træningsresultat.svømmer())) {
+                            top5Svømmere.add(træningsresultat);
+                        }
+                    }
                 }
             }
         }
+        return top5Svømmere;
     }
-    return ...
 
     public int sumAfKontingent(){
         int sum = 0;

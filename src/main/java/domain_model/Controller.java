@@ -41,5 +41,7 @@ public class Controller {
         return klub.getSeniorsvømmere();
     }
 
-
+    public List<Træningsresultat> visTop5Svømmere() {
+        return klub.visTop5Svømmere();
+    }
 }

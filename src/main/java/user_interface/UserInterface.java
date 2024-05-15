@@ -1,8 +1,6 @@
 package user_interface;
 
-import domain_model.Controller;
-import domain_model.Konkurrencesvømmer;
-import domain_model.Svømmedisciplin;
+import domain_model.*;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -48,7 +46,7 @@ public class UserInterface {
             """
         );
 
-        int userInput = scan.number("Indtast menuvalg: ", 0, 4);
+        int userInput = scan.number("Indtast menuvalg: ", 0, 5);
 
         System.out.println();
 
@@ -57,7 +55,7 @@ public class UserInterface {
             case 2 -> menuPunktKontingentOversigt();
             case 3 -> menuPunktRestanceOversigt();
             case 4 -> menuPunktTilføjTræningsresultater();
-            case 5 -> ...
+            case 5 -> menuPunktTop5Svømmere();
             case 0 -> System.out.println("Gemmer...");
         }
     }
@@ -66,7 +64,10 @@ public class UserInterface {
     private void menuPunktTop5Svømmere(){
         System.out.println("Oversigt over top 5 svømmere junior/senior i alle svømmedicipliner");
         System.out.println("Der skal tasts noget her senere... ");
-
+        for (Træningsresultat tr : controller.visTop5Svømmere()) {
+            System.out.println(tr);
+        }
+        hovedmenu();
     }
 
     private void menuPunktTilføjMedlem(){
