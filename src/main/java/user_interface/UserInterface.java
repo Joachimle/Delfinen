@@ -18,8 +18,8 @@ public class UserInterface {
         controller = new Controller();
 
         // Hardcodede medlemmer til test af UI
-        controller.addMember("Joachim Leth Elgaard", 21, 02, 2001, Set.of(Svømmedisciplin.RYGCRAWL));
-        controller.addMember("Jens Ellegaard", 22, 9, 1337, Set.of(Svømmedisciplin.CRAWL, Svømmedisciplin.BUTTERFLY));
+        controller.addMember("Joachim Leth Elgaard", 21, 02, 2001, false, Set.of(Svømmedisciplin.RYGCRAWL));
+        controller.addMember("Jens Ellegaard", 22, 9, 1337, true, Set.of(Svømmedisciplin.CRAWL, Svømmedisciplin.BUTTERFLY));
     }
 
     ////////// METHODS ///////////
@@ -77,13 +77,24 @@ public class UserInterface {
         int månedsdag = dato.getDayOfMonth();
         int måned = dato.getMonthValue();
         int år = dato.getYear();
+
+        boolean iRestance;
+        switch(scan.number("Har medlemmet betalt kontingent (1), eller er medlemmet i restance (2)?", 0, 2)){
+            case 2 -> iRestance = true;
+            case 1 -> iRestance = false;
+            default -> {
+                hovedmenu();
+                return;
+            }
+        }
+
         switch (scan.number("Passivt medlem (1), motionist (2) eller konkurrencesvømmer (3): ", 0, 3)) {
             case 0 -> {
                 hovedmenu();
                 return;
             }
-            case 1 -> controller.addMember(navn, månedsdag, måned, år, true);
-            case 2 -> controller.addMember(navn, månedsdag, måned, år, false);
+            case 1 -> controller.addMember(navn, månedsdag, måned, år, iRestance, true);
+            case 2 -> controller.addMember(navn, månedsdag, måned, år, iRestance,false);
             case 3 -> {
                 System.out.println("Butterfly (1), crawl (2), rygcrawl (3) og brystsvømning (4).");
                 System.out.println("Vælg én eller flere discipliner, fx 23 for crawl og rygcrawl: ");
@@ -105,7 +116,7 @@ public class UserInterface {
                 if (input.contains("4")) {
                     discipliner.add(Svømmedisciplin.BRYSTSVØMNING);
                 }
-                controller.addMember(navn, månedsdag, måned, år, discipliner);
+                controller.addMember(navn, månedsdag, måned, år, iRestance, discipliner);
                 System.out.print(navn + " er tilføjet som ny konkurrencesvømmer i ");
                 StringJoiner sj = new StringJoiner(", ");
                 discipliner.forEach(svømmedisciplin -> sj.add(svømmedisciplin.toString().toLowerCase()));

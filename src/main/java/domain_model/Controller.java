@@ -13,12 +13,12 @@ public class Controller {
         klub = new Klub();
     }
 
-    public void addMember(String navn, int månedsdag, int måned, int år, boolean aktivtMedlem) {
-        klub.addMember(navn, månedsdag, måned, år, aktivtMedlem);
+    public void addMember(String navn, int månedsdag, int måned, int år, boolean iRestance, boolean passivtMedlem) {
+        klub.addMember(navn, månedsdag, måned, år, iRestance, passivtMedlem);
     }
 
-    public void addMember(String navn, int månedsdag, int måned, int år, Set<Svømmedisciplin> discipliner) {
-        klub.addMember(navn, månedsdag, måned, år, discipliner);
+    public void addMember(String navn, int månedsdag, int måned, int år, boolean iRestance, Set<Svømmedisciplin> discipliner) {
+        klub.addMember(navn, månedsdag, måned, år, iRestance, discipliner);
     }
 
     public void tilføjTræningsresultat(Konkurrencesvømmer svømmer, Svømmedisciplin disciplin, LocalDate dato, Duration resultat) {
@@ -40,4 +40,6 @@ public class Controller {
     public List<Konkurrencesvømmer> getSeniorsvømmere() {
         return klub.getSeniorsvømmere();
     }
+
+
 }

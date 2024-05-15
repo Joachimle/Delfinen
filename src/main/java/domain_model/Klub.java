@@ -17,12 +17,12 @@ public class Klub {
 
 
     /////// METHODS ////////
-    public void addMember(String navn, int månedsdag, int måned, int år, boolean passivtMedlem) {
-        medlemmer.add(new Medlem(navn, månedsdag, måned, år, passivtMedlem));
+    public void addMember(String navn, int månedsdag, int måned, int år, boolean iRestance, boolean passivtMedlem) {
+        medlemmer.add(new Medlem(navn, månedsdag, måned, år, iRestance, passivtMedlem));
     }
 
-    public void addMember(String navn, int månedsdag, int måned, int år, Set<Svømmedisciplin> discipliner) {
-        medlemmer.add(new Konkurrencesvømmer(navn, månedsdag, måned, år, discipliner));
+    public void addMember(String navn, int månedsdag, int måned, int år, boolean iRestance, Set<Svømmedisciplin> discipliner) {
+        medlemmer.add(new Konkurrencesvømmer(navn, månedsdag, måned, år, iRestance, discipliner));
     }
 
     public void tilføjTræningsresultat(Konkurrencesvømmer svømmer, Svømmedisciplin disciplin, LocalDate dato, Duration resultat) {
