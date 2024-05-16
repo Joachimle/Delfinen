@@ -18,6 +18,17 @@ public class UserInterface {
         // Hardcodede medlemmer til test af UI
         controller.addMember("Joachim Leth Elgaard", 21, 02, 2001, false, Set.of(Svømmedisciplin.RYGCRAWL));
         controller.addMember("Jens Ellegaard", 22, 9, 1337, true, Set.of(Svømmedisciplin.CRAWL, Svømmedisciplin.BUTTERFLY));
+        controller.addMember("Margrethe Alexandrine Þórhildur Ingrid", 16, 4, 1940, false, Set.of(Svømmedisciplin.RYGCRAWL, Svømmedisciplin.BRYSTSVØMNING));
+        controller.addMember("Frederik André Henrik Christian", 26, 5, 1968, false, Set.of(Svømmedisciplin.CRAWL));
+        controller.addMember("Mary Elizabeth", 5, 2, 1972, false, Set.of(Svømmedisciplin.BUTTERFLY));
+        controller.addMember("Christian Valdemar Henri John", 10, 10, 2005, false, Set.of(Svømmedisciplin.CRAWL, Svømmedisciplin.BRYSTSVØMNING, Svømmedisciplin.BUTTERFLY));
+
+        // Hardcodede træningsresultater
+        Random rnd = new Random();
+        List<Konkurrencesvømmer> svømmere = controller.getSeniorsvømmere();
+        for (int i = 0; i < 100; i++) {
+            controller.tilføjTræningsresultat(svømmere.get(rnd.nextInt(svømmere.size())), Svømmedisciplin.values()[rnd.nextInt(Svømmedisciplin.values().length)], LocalDate.now(), Duration.ofMillis(rnd.nextInt()));
+        }
     }
 
     ////////// METHODS ///////////
