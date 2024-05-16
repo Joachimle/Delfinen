@@ -7,12 +7,15 @@ import java.util.Set;
 
 public class Controller {
 
+    ///////// ATTRIBUTES ///////////
     private Klub klub;
 
+    ///////// CONSTRUCTOR ///////////
     public Controller() {
         klub = new Klub();
     }
 
+    ///////// METHODS //////////
     public void addMember(String navn, int månedsdag, int måned, int år, boolean iRestance, boolean passivtMedlem) {
         klub.addMember(navn, månedsdag, måned, år, iRestance, passivtMedlem);
     }

@@ -18,6 +18,7 @@ public class Scan {
     public String string(){
         return scanner.nextLine();
     }
+
     public int number(String prompt, int minimum, int maximum) {
         System.out.print(prompt);
         String input = scanner.nextLine();

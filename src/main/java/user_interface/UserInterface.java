@@ -173,7 +173,6 @@ public class UserInterface {
         System.out.println("Svømmernes resultater indtastes i tidsformat M.S.C, hvor C er hundrededele sekunder med to cifre.");
         System.out.println("Tast 0 undervejs for at springe en svømmers svømmedisciplin over.");
         for (Konkurrencesvømmer svømmer : hold) {
-            //TODO undersøg om svømmer.getAktiveDiscipliner burde gå gennem Controller
             for (Svømmedisciplin disciplin : svømmer.getAktiveDiscipliner()) {
                 Duration resultat = scan.result("Hvilken tid fik " + svømmer.getNavn() + " i " + disciplin.toString().toLowerCase() + "? Svar: ");
                 if (resultat != null) {
