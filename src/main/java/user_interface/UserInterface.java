@@ -63,10 +63,38 @@ public class UserInterface {
 
     private void menuPunktTop5Svømmere(){
         System.out.println("Oversigt over top 5 svømmere junior/senior i alle svømmedicipliner");
-        System.out.println("Der skal tasts noget her senere... ");
-        for (String tr : controller.visTop5Svømmere()) {
-            System.out.println(tr);
+        System.out.println("Tast 0 for at gå tilbage til hovedmenuen.");
+        int valgHold = scan.number("Juniorhold (tast 1) eller seniorhold (tast 2): ", 0, 2);
+        if (valgHold == 0) {
+            hovedmenu();
+            return;
         }
+
+        boolean juniorHold = valgHold == 1;
+
+        int valgDisciplin = scan.number("Butterfly (1), crawl (2), rygcrawl (3) og brystsvømning (4): ", 0, 4);
+        if (valgDisciplin == 0) {
+            hovedmenu();
+            return;
+        }
+
+        Svømmedisciplin disciplin = switch (valgDisciplin) {
+            case 1 -> Svømmedisciplin.BUTTERFLY;
+            case 2 -> Svømmedisciplin.CRAWL;
+            case 3 -> Svømmedisciplin.RYGCRAWL;
+            default -> Svømmedisciplin.BRYSTSVØMNING;
+        };
+
+        System.out.println("\nTop 5 svømmere i denne disciplin:\n");
+
+        for (String topSvømmer : controller.visTop5Svømmere(disciplin, juniorHold)) {
+            System.out.println(topSvømmer);
+        }
+
+        if (controller.visTop5Svømmere(disciplin, juniorHold).isEmpty()){
+            System.out.println("\nDer er ingen registrerede resultater for svømmere på dette hold i denne disciplin");
+        }
+
         hovedmenu();
     }
 

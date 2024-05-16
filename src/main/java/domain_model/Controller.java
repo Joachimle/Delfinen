@@ -44,7 +44,7 @@ public class Controller {
         return klub.getSeniorsvømmere();
     }
 
-    public List<String> visTop5Svømmere() {
-        return klub.visTop5Svømmere();
+    public List<String> visTop5Svømmere(Svømmedisciplin disciplin, boolean juniorHold) {
+        return klub.visTop5Svømmere(disciplin, juniorHold);
     }
 }
