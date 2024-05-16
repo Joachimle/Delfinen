@@ -6,11 +6,15 @@ import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Scan {
-    private Scanner scanner;
+    ///////// ATTRIBUTES ///////////
+    private final Scanner scanner;
 
+    ///////// CONSTRUCTOR ///////////
     public Scan() {
         scanner = new Scanner(System.in);
     }
+
+    ///////// METHODS //////////
     public String string(){
         return scanner.nextLine();
     }
