@@ -26,8 +26,11 @@ public class UserInterface {
         // Hardcodede træningsresultater
         Random rnd = new Random();
         List<Konkurrencesvømmer> svømmere = controller.getSeniorsvømmere();
-        for (int i = 0; i < 100; i++) {
-            controller.tilføjTræningsresultat(svømmere.get(rnd.nextInt(svømmere.size())), Svømmedisciplin.values()[rnd.nextInt(Svømmedisciplin.values().length)], LocalDate.now(), Duration.ofMillis(rnd.nextInt()));
+        for (int i = 0; i < 500; i++) {
+            Konkurrencesvømmer svømmer = svømmere.get(rnd.nextInt(svømmere.size()));
+            List<Svømmedisciplin> discipliner = svømmer.getAktiveDiscipliner().stream().toList();
+            Svømmedisciplin disciplin = discipliner.get(rnd.nextInt(discipliner.size()));
+            controller.tilføjTræningsresultat(svømmer, disciplin, LocalDate.now(), Duration.ofMillis(rnd.nextInt()));
         }
     }
 
