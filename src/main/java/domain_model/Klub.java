@@ -30,15 +30,15 @@ public class Klub {
         træningsresultater.add(new Træningsresultat(svømmer, disciplin, dato, resultat));
     }
 
-    public List<Træningsresultat> visTop5Svømmere() {
-        List<Træningsresultat> top5Svømmere = new ArrayList<>();
+    public List<String> visTop5Svømmere() {
+        List<String> top5Svømmere = new ArrayList<>();
         Collections.sort(træningsresultater); // Naturlig sortering (Duration resultater)
         for (Træningsresultat træningsresultat : træningsresultater) {
             if (træningsresultat.disciplin() == Svømmedisciplin.CRAWL) {
                 if (getJuniorsvømmere().contains(træningsresultat.svømmer())) {
                     if (top5Svømmere.size() < 5) {
-                        if (!top5Svømmere.contains(træningsresultat.svømmer())) {
-                            top5Svømmere.add(træningsresultat);
+                        if (!top5Svømmere.contains(træningsresultat.svømmer().getNavn())) {
+                            top5Svømmere.add(træningsresultat.svømmer().getNavn());
                         }
                     }
                 }

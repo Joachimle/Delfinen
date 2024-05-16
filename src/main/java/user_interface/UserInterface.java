@@ -64,7 +64,7 @@ public class UserInterface {
     private void menuPunktTop5Svømmere(){
         System.out.println("Oversigt over top 5 svømmere junior/senior i alle svømmedicipliner");
         System.out.println("Der skal tasts noget her senere... ");
-        for (Træningsresultat tr : controller.visTop5Svømmere()) {
+        for (String tr : controller.visTop5Svømmere()) {
             System.out.println(tr);
         }
         hovedmenu();
