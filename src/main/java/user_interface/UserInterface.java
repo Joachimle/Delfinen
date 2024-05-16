@@ -96,14 +96,14 @@ public class UserInterface {
             default -> Svømmedisciplin.BRYSTSVØMNING;
         };
 
-        System.out.println("\nTop 5 svømmere i denne disciplin:\n");
+        if (controller.visTop5Svømmere(disciplin, juniorHold).isEmpty()){
+            System.out.println("\nDer er ingen registrerede resultater for svømmere på dette hold i denne disciplin");
+        } else {
+            System.out.println("\nTop 5 svømmere i denne disciplin:");
+        }
 
         for (String topSvømmer : controller.visTop5Svømmere(disciplin, juniorHold)) {
             System.out.println(topSvømmer);
-        }
-
-        if (controller.visTop5Svømmere(disciplin, juniorHold).isEmpty()){
-            System.out.println("\nDer er ingen registrerede resultater for svømmere på dette hold i denne disciplin");
         }
 
         hovedmenu();
