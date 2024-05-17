@@ -35,6 +35,11 @@ public class Medlem {
         }
     }
 
+    public boolean erMindreårig() {
+        int antalÅrGammel = Period.between(fødselsdato, LocalDate.now()).getYears();
+        return antalÅrGammel < 18;
+    }
+
     public boolean erIRestance(){
         return iRestance;
     }
@@ -43,8 +48,14 @@ public class Medlem {
         return navn;
     }
 
-    public boolean erMindreårig() {
-        int antalÅrGammel = Period.between(fødselsdato, LocalDate.now()).getYears();
-        return antalÅrGammel < 18;
+    @Override
+    public String toString(){
+        return
+                navn + ";" +
+                fødselsdato.getDayOfMonth() + ";" +
+                fødselsdato.getMonthValue() + ";" +
+                fødselsdato.getYear() + ";" +
+                iRestance + ";" +
+                passivtMedlem;
     }
 }
