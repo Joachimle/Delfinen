@@ -24,8 +24,8 @@ public class Controller {
         klub.addMember(navn, månedsdag, måned, år, iRestance, discipliner);
     }
 
-    public void tilføjTræningsresultat(Konkurrencesvømmer svømmer, Svømmedisciplin disciplin, LocalDate dato, Duration resultat) {
-        klub.tilføjTræningsresultat(svømmer, disciplin, dato, resultat);
+    public void tilføjTræningsresultat(Konkurrencesvømmer svømmer, Svømmedisciplin disciplin, Duration resultat, LocalDate dato) {
+        klub.tilføjTræningsresultat(svømmer, disciplin, resultat, dato);
     }
 
     public int sumAfKontingent() {
@@ -46,5 +46,37 @@ public class Controller {
 
     public List<String> visTop5Svømmere(Svømmedisciplin disciplin, boolean juniorHold) {
         return klub.visTop5Svømmere(disciplin, juniorHold);
+    }
+
+    public void slet(Medlem medlem) {
+        klub.slet(medlem);
+    }
+
+    public List<Medlem> getMedlemmer() {
+        return klub.getMedlemmer();
+    }
+
+    public void konverter(Medlem medlem, Set<Svømmedisciplin> aktiveDiscipliner) {
+        klub.konverter(medlem, aktiveDiscipliner);
+    }
+
+    public void konverter(Konkurrencesvømmer medlem, boolean passivtMedlem) {
+        klub.konverter(medlem, passivtMedlem);
+    }
+
+    public void slet(Resultat resultat) {
+        klub.slet(resultat);
+    }
+
+    public List<Træningsresultat> getTræningsresultater(Konkurrencesvømmer ks) {
+        return klub.getTræningsresultater(ks);
+    }
+
+    public List<Konkurrenceresultat> getKonkurrenceresultater(Konkurrencesvømmer ks) {
+        return klub.getKonkurrenceresultater(ks);
+    }
+
+    public void tilføjKonkurrenceresultat(Konkurrencesvømmer svømmer, Svømmedisciplin disciplin, Duration resultat, LocalDate dato, String stævne, int placering) {
+        klub.tilføjKonkurrenceresultat(svømmer, disciplin, resultat, dato, stævne, placering);
     }
 }

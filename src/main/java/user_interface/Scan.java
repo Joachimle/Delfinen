@@ -1,9 +1,13 @@
 package user_interface;
 
+import domain_model.Svømmedisciplin;
+
 import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Scan {
     ///////// ATTRIBUTES ///////////
@@ -112,4 +116,26 @@ public class Scan {
         }
     }
 
+    public Set<Svømmedisciplin> disclipliner() {
+        System.out.println("Butterfly (1), crawl (2), rygcrawl (3) og brystsvømning (4).");
+        System.out.print("Vælg én eller flere discipliner, fx 23 for crawl og rygcrawl: ");
+        String input = scanner.nextLine();
+        if (input.trim().equals("0")) {
+            return null;
+        }
+        Set<Svømmedisciplin> discipliner = new TreeSet<>();
+        if (input.contains("1")) {
+            discipliner.add(Svømmedisciplin.BUTTERFLY);
+        }
+        if (input.contains("2")) {
+            discipliner.add(Svømmedisciplin.CRAWL);
+        }
+        if (input.contains("3")) {
+            discipliner.add(Svømmedisciplin.RYGCRAWL);
+        }
+        if (input.contains("4")) {
+            discipliner.add(Svømmedisciplin.BRYSTSVØMNING);
+        }
+        return discipliner;
+    }
 }

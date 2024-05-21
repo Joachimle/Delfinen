@@ -14,4 +14,13 @@ public class Konkurrencesvømmer extends Medlem {
     public Set<Svømmedisciplin> getAktiveDiscipliner() {
         return aktiveDiscipliner;
     }
+
+    public void setAktiveDiscipliner(Set<Svømmedisciplin> aktiveDiscipliner) {
+        this.aktiveDiscipliner = aktiveDiscipliner;
+    }
+
+    public Medlem konverter(boolean passivtMedlem) {
+        String[] dato = getFødselsdato().split("/");
+        return new Medlem(getNavn(), Integer.parseInt(dato[0]), Integer.parseInt(dato[1]), Integer.parseInt(dato[2]), erIRestance(), passivtMedlem);
+    }
 }

@@ -6,40 +6,44 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Klub {
     private List<Medlem> medlemmer;
-    private List<Træningsresultat> træningsresultater;
+    private List<Resultat> resultater;
 
     public Klub() {
         medlemmer = new ArrayList<>();
-        træningsresultater = new ArrayList<>();
+        resultater = new ArrayList<>();
     }
 
 
     /////// METHODS ////////
     public void addMember(String navn, int månedsdag, int måned, int år, boolean iRestance, boolean passivtMedlem) {
         medlemmer.add(new Medlem(navn, månedsdag, måned, år, iRestance, passivtMedlem));
+        Collections.sort(medlemmer);
     }
 
     public void addMember(String navn, int månedsdag, int måned, int år, boolean iRestance, Set<Svømmedisciplin> discipliner) {
         medlemmer.add(new Konkurrencesvømmer(navn, månedsdag, måned, år, iRestance, discipliner));
+        Collections.sort(medlemmer);
     }
 
-    public void tilføjTræningsresultat(Konkurrencesvømmer svømmer, Svømmedisciplin disciplin, LocalDate dato, Duration resultat) {
-        træningsresultater.add(new Træningsresultat(svømmer, disciplin, dato, resultat));
+    public void tilføjTræningsresultat(Konkurrencesvømmer svømmer, Svømmedisciplin disciplin, Duration resultat, LocalDate dato) {
+        resultater.add(new Træningsresultat(svømmer, disciplin, resultat, dato));
+        Collections.sort(resultater);
     }
 
     public List<String> visTop5Svømmere(Svømmedisciplin disciplin, boolean juniorHold) {
         List<String> top5Svømmere = new ArrayList<>();
         List<Konkurrencesvømmer> hold = juniorHold ? getJuniorsvømmere() : getSeniorsvømmere();
-        Collections.sort(træningsresultater); // Naturlig sortering (Duration resultater)
-        for (Træningsresultat træningsresultat : træningsresultater) {
-            if (træningsresultat.disciplin() == disciplin) {
-                if (hold.contains(træningsresultat.svømmer())) {
+        Collections.sort(resultater); // Naturlig sortering (Duration resultater)
+        for (Resultat resultat : resultater) {
+            if (resultat.disciplin() == disciplin) {
+                if (hold.contains(resultat.svømmer())) {
                     if (top5Svømmere.size() < 5) {
-                        if (!top5Svømmere.contains(træningsresultat.svømmer().getNavn())) {
-                            top5Svømmere.add(træningsresultat.svømmer().getNavn());
+                        if (!top5Svømmere.contains(resultat.svømmer().getNavn())) {
+                            top5Svømmere.add(resultat.svømmer().getNavn());
                         }
                     }
                 }
@@ -84,5 +88,57 @@ public class Klub {
             }
         }
         return hold;
+    }
+
+    public List<Medlem> getMedlemmer() {
+        return List.copyOf(medlemmer);
+    }
+
+    public void slet(Medlem medlem) {
+        medlemmer.remove(medlem);
+        if (medlem instanceof Konkurrencesvømmer ks) {
+            resultater.removeIf(resultat -> resultat.svømmer() == ks);
+        }
+    }
+
+    public void slet(Resultat resultat) {
+        resultater.remove(resultat);
+    }
+
+    public void konverter(Medlem medlem, Set<Svømmedisciplin> aktiveDiscipliner) {
+        medlemmer.remove(medlem);
+        medlemmer.add(medlem.konverter(aktiveDiscipliner));
+        Collections.sort(medlemmer);
+    }
+
+    public void konverter(Konkurrencesvømmer medlem, boolean passivtMedlem) {
+        medlemmer.remove(medlem);
+        medlemmer.add(medlem.konverter(passivtMedlem));
+        Collections.sort(medlemmer);
+    }
+
+    public List<Træningsresultat> getTræningsresultater(Konkurrencesvømmer ks) {
+        List<Træningsresultat> trr = new ArrayList<>();
+        resultater.forEach(resultat -> {
+            if (resultat.svømmer() == ks && resultat instanceof Træningsresultat tr) {
+                trr.add(tr);
+            }
+        });
+        return trr;
+    }
+
+    public List<Konkurrenceresultat> getKonkurrenceresultater(Konkurrencesvømmer ks) {
+        List<Konkurrenceresultat> krr = new ArrayList<>();
+        resultater.forEach(resultat -> {
+            if (resultat.svømmer() == ks && resultat instanceof Konkurrenceresultat kr) {
+                krr.add(kr);
+            }
+        });
+        return krr;
+    }
+
+    public void tilføjKonkurrenceresultat(Konkurrencesvømmer svømmer, Svømmedisciplin disciplin, Duration resultat, LocalDate dato, String stævne, int placering) {
+        resultater.add(new Konkurrenceresultat(svømmer, disciplin, resultat, dato, stævne, placering));
+        Collections.sort(resultater);
     }
 }

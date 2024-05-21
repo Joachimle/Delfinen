@@ -2,8 +2,9 @@ package domain_model;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Set;
 
-public class Medlem {
+public class Medlem implements Comparable<Medlem> {
     //////// ATTRIBUTES /////////
     private String navn;
     private LocalDate fødselsdato;
@@ -57,5 +58,42 @@ public class Medlem {
                 fødselsdato.getYear() + ";" +
                 iRestance + ";" +
                 passivtMedlem;
+    }
+
+    @Override
+    public int compareTo(Medlem that) {
+        return this.navn.compareTo(that.navn);
+    }
+
+    public String getFødselsdato() {
+        return fødselsdato.getDayOfMonth() + "/" + fødselsdato.getMonthValue() + "/" + fødselsdato.getYear();
+    }
+
+    public String getPassivtMedlem() {
+        return passivtMedlem ? "Passivt medlem" : "Aktivt medlem";
+    }
+
+    public String getIRestance() {
+        return iRestance ? "Er i restance" : "Har betalt kontingent";
+    }
+
+    public void setNavn(String navn) {
+        this.navn = navn;
+    }
+
+    public void setFødselsdato(int månedsdag, int måned, int år) {
+        fødselsdato = LocalDate.of(månedsdag, måned, år);
+    }
+
+    public void setiRestance(boolean iRestance) {
+        this.iRestance = iRestance;
+    }
+
+    public void setPassivtMedlem(boolean passivtMedlem) {
+        this.passivtMedlem = passivtMedlem;
+    }
+
+    public Konkurrencesvømmer konverter(Set<Svømmedisciplin> aktiveDiscipliner) {
+        return new Konkurrencesvømmer(navn, fødselsdato.getDayOfMonth(), fødselsdato.getMonthValue(), fødselsdato.getYear(), iRestance, aktiveDiscipliner);
     }
 }
