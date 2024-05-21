@@ -1,9 +1,11 @@
 package domain_model;
 
 import java.time.Duration;
+import java.time.LocalDate;
 
 public interface Resultat extends Comparable<Resultat> {
-    public Konkurrencesvømmer svømmer();
-    public Svømmedisciplin disciplin();
-    public Duration resultat();
+    Konkurrencesvømmer svømmer();
+    Svømmedisciplin disciplin();
+    Duration resultat();
+    LocalDate dato();
 }

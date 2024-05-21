@@ -6,6 +6,7 @@ import java.util.Set;
 
 public class Medlem implements Comparable<Medlem> {
     //////// ATTRIBUTES /////////
+    private int ID = 0;
     private String navn;
     private LocalDate fødselsdato;
     private boolean iRestance;
@@ -95,5 +96,13 @@ public class Medlem implements Comparable<Medlem> {
 
     public Konkurrencesvømmer konverter(Set<Svømmedisciplin> aktiveDiscipliner) {
         return new Konkurrencesvømmer(navn, fødselsdato.getDayOfMonth(), fødselsdato.getMonthValue(), fødselsdato.getYear(), iRestance, aktiveDiscipliner);
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public int getID() {
+        return ID;
     }
 }

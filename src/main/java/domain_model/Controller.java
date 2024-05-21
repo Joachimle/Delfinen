@@ -79,4 +79,12 @@ public class Controller {
     public void tilføjKonkurrenceresultat(Konkurrencesvømmer svømmer, Svømmedisciplin disciplin, Duration resultat, LocalDate dato, String stævne, int placering) {
         klub.tilføjKonkurrenceresultat(svømmer, disciplin, resultat, dato, stævne, placering);
     }
+
+    public void load() {
+        klub.load();
+    }
+
+    public void save() {
+        klub.save();
+    }
 }

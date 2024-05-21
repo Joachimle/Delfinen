@@ -1,12 +1,13 @@
 package domain_model;
 
+import data_source.Filehandler;
+
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class Klub {
     private List<Medlem> medlemmer;
@@ -140,5 +141,14 @@ public class Klub {
     public void tilføjKonkurrenceresultat(Konkurrencesvømmer svømmer, Svømmedisciplin disciplin, Duration resultat, LocalDate dato, String stævne, int placering) {
         resultater.add(new Konkurrenceresultat(svømmer, disciplin, resultat, dato, stævne, placering));
         Collections.sort(resultater);
+    }
+
+    public void load() {
+        List[] lister = Filehandler.load();
+        medlemmer.addAll(lister[0]);
+        resultater.addAll(lister[1]);
+    }
+    public void save() {
+        Filehandler.save(medlemmer, resultater);
     }
 }

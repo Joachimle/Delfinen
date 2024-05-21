@@ -12,37 +12,20 @@ public class UserInterface {
 
     ///////// CONSTRUCTOR ////////////
     public UserInterface() {
-
         controller = new Controller();
-
-        // Hardcodede medlemmer til test af UI
-        controller.addMember("Joachim Leth Elgaard", 21, 02, 2001, false, Set.of(Svømmedisciplin.RYGCRAWL));
-        controller.addMember("Jens Ellegaard", 22, 9, 1337, true, Set.of(Svømmedisciplin.CRAWL, Svømmedisciplin.BUTTERFLY));
-        controller.addMember("Margrethe Alexandrine Þórhildur Ingrid", 16, 4, 1940, false, Set.of(Svømmedisciplin.RYGCRAWL, Svømmedisciplin.BRYSTSVØMNING));
-        controller.addMember("Frederik André Henrik Christian", 26, 5, 1968, false, Set.of(Svømmedisciplin.CRAWL));
-        controller.addMember("Mary Elizabeth", 5, 2, 1972, false, Set.of(Svømmedisciplin.BUTTERFLY));
-        controller.addMember("Christian Valdemar Henri John", 10, 10, 2005, false, Set.of(Svømmedisciplin.CRAWL, Svømmedisciplin.BRYSTSVØMNING, Svømmedisciplin.BUTTERFLY));
-
-        // Hardcodede træningsresultater
-        Random rnd = new Random();
-        List<Konkurrencesvømmer> svømmere = controller.getSeniorsvømmere();
-        for (int i = 0; i < 500; i++) {
-            Konkurrencesvømmer svømmer = svømmere.get(rnd.nextInt(svømmere.size()));
-            List<Svømmedisciplin> discipliner = svømmer.getAktiveDiscipliner().stream().toList();
-            Svømmedisciplin disciplin = discipliner.get(rnd.nextInt(discipliner.size()));
-            controller.tilføjTræningsresultat(svømmer, disciplin, Duration.ofMillis(rnd.nextInt(600000)), LocalDate.now());
-        }
     }
 
     ////////// METHODS ///////////
     public void start() {
 
-        // Programmet åbnes (her skal loades)
+        // Programmet åbnes
+        controller.load();
         scan = new Scan();
         System.out.println("\nVelkommen til Svømmeklubben Delfinens administrative system.");
         hovedmenu();
 
-        // Programmet lukkes (her skal gemmes)
+        // Programmet lukkes
+        controller.save();
         System.out.println("Programmet er lukket.");
     }
 
@@ -227,19 +210,18 @@ public class UserInterface {
             return;
         }
         Medlem valgt = medlemmer.get(valg - 1);
-        String ekstraPunkter = valgt instanceof Konkurrencesvømmer ? "6) Konvertér til motionssvømmer\n7) Aktive discipliner\n8) Træningsresultater\n9) Konkurrenceresultater" : "6) Konvertér til konkurrencesvømmer";
+        String ekstraPunkter = valgt instanceof Konkurrencesvømmer ks ? STR."5) Konvertér til motionist\n6) Redigér aktive discipliner fra \{sd(ks.getAktiveDiscipliner())}\n7) Træningsresultater\n8) Konkurrenceresultater" : STR."5) Konvertér til konkurrencesvømmer\n6) Redigér status fra '\{valgt.getPassivtMedlem()}'";
         System.out.println(STR."""
 
             Medlemsmenu
             1) Redigér navn fra '\{valgt.getNavn()}'
             2) Redigér fødselsdato fra \{valgt.getFødselsdato()}
             3) Redigér betaling fra '\{valgt.getIRestance()}'
-            4) Redigér status fra '\{valgt.getPassivtMedlem()}'
-            5) Slet dette medlem
+            4) Slet dette medlem
             \{ekstraPunkter}
             0) Tilbage til hovedmenu
             """);
-        int valg2 = scan.number("Indtast valg: ", 0, valgt instanceof Konkurrencesvømmer ? 9 : 6);
+        int valg2 = scan.number("Indtast valg: ", 0, valgt instanceof Konkurrencesvømmer ? 8 : 6);
         System.out.println();
         switch (valg2) {
             case 1 -> {
@@ -259,9 +241,8 @@ public class UserInterface {
                     valgt.setFødselsdato(ny.getDayOfMonth(), ny.getMonthValue(), ny.getYear());
                 }
             }
-            case 3 -> valgt.setiRestance(scan.number("Har medlemmet betalt kontingent (1), eller er medlemmet i restance (2)?", 1, 2) == 2);
-            case 4 -> valgt.setPassivtMedlem(scan.number("Passivt medlem (1) eller aktivt medlem (2)?", 1, 2) == 2);
-            case 5 -> {
+            case 3 -> valgt.setiRestance(scan.number("Har medlemmet betalt kontingent (1) eller er medlemmet i restance (2): ", 1, 2) == 2);
+            case 4 -> {
                 System.out.println(STR."\u001B[91mAdvarsel:\u001B[0m Er du sikker på, at du vil slette \{valgt.getNavn()} som medlem inklusiv alt vedr. data?");
                 int valg3 = scan.number("Slet permanent (1) eller fortryd (0): ", 0, 1);
                 if (valg3 == 1) {
@@ -270,7 +251,7 @@ public class UserInterface {
                     System.out.println(valgt.getNavn() + " blev ikke slettet.");
                 }
             }
-            case 6 -> {
+            case 5 -> {
                 if (valgt instanceof Konkurrencesvømmer konvertit) {
                     System.out.println("\u001B[91mAdvarsel:\u001B[0m Når et medlem konverteres fra konkurrencesvømmer til motionist, slettes alt medlemmets data vedr. aktive discipliner, træningsresultater og konkurrenceresultater.");
                     switch (scan.number(STR."Konvertér \{konvertit.getNavn()} til passivt medlem (1), motionist (2) eller fortryd (0): ", 0, 2)) {
@@ -295,18 +276,21 @@ public class UserInterface {
                     }
                 }
             }
-            case 7 -> {
-                Konkurrencesvømmer ks = (Konkurrencesvømmer) valgt;
-                System.out.println(STR."\{ks.getNavn()} er registreret indenfor \{sd(ks.getAktiveDiscipliner())}.\nTast 0 for at annullere og gå tilbage til hovedmenuen.");
-                Set<Svømmedisciplin> discipliner = scan.disclipliner();
-                if (discipliner == null) {
-                    System.out.println(STR."\{ks.getNavn()} fik ikke ændret sine svømmediscipliner.");
+            case 6 -> {
+                if (valgt instanceof Konkurrencesvømmer ks) {
+                    System.out.println("Tast 0 for at annullere og gå tilbage til hovedmenuen.");
+                    Set<Svømmedisciplin> discipliner = scan.disclipliner();
+                    if (discipliner == null) {
+                        System.out.println(STR."\{ks.getNavn()} fik ikke ændret sine svømmediscipliner.");
+                    } else {
+                        ks.setAktiveDiscipliner(discipliner);
+                        System.out.println(STR."\{valgt.getNavn()} fik ændret sine svømmediscipliner til \{sd(discipliner)}.");
+                    }
                 } else {
-                    ks.setAktiveDiscipliner(discipliner);
-                    System.out.println(STR."\{valgt.getNavn()} fik ændret sine svømmediscipliner til \{sd(discipliner)}.");
+                    valgt.setPassivtMedlem(scan.number("Passivt medlem (1) eller aktivt medlem (2): ", 1, 2) == 2);
                 }
             }
-            case 8 -> {
+            case 7 -> {
                 Konkurrencesvømmer ks = (Konkurrencesvømmer) valgt;
                 System.out.println(STR."Træningsresultater for \{ks.getNavn()}");
                 int trNummer = 0;
@@ -325,17 +309,17 @@ public class UserInterface {
                         case 4 -> Svømmedisciplin.BRYSTSVØMNING;
                         default -> {
                             b = true;
-                            yield Svømmedisciplin.BRYSTSVØMNING;
+                            yield null;
                         }
                     };
                     if (b) {
                         break;
                     }
-                    Duration r = scan.result("Tid: ");
+                    Duration r = scan.result("Indtast tid: ");
                     if (r == null) {
                         break;
                     }
-                    LocalDate d = scan.date("Dato: ");
+                    LocalDate d = scan.date("Indtast dato: ");
                     if (d == null) {
                         break;
                     }
@@ -346,7 +330,7 @@ public class UserInterface {
                     System.out.println("Følgende træningsresultat for " + ks.getNavn() + " blev slettet: " + trr.get(valg3 - 1));
                 }
             }
-            case 9 -> {
+            case 8 -> {
                 Konkurrencesvømmer ks = (Konkurrencesvømmer) valgt;
                 System.out.println(STR."Konkurrenceresultater for \{ks.getNavn()}");
                 int krNummer = 0;
@@ -365,17 +349,17 @@ public class UserInterface {
                         case 4 -> Svømmedisciplin.BRYSTSVØMNING;
                         default -> {
                             b = true;
-                            yield Svømmedisciplin.BRYSTSVØMNING;
+                            yield null;
                         }
                     };
                     if (b) {
                         break;
                     }
-                    Duration r = scan.result("Tid: ");
+                    Duration r = scan.result("Indtast tid: ");
                     if (r == null) {
                         break;
                     }
-                    LocalDate d = scan.date("Dato: ");
+                    LocalDate d = scan.date("Indtast dato: ");
                     if (d == null) {
                         break;
                     }
